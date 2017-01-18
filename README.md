@@ -25,11 +25,13 @@ _git clone --bare https://githost.org/extuser/repo.git_
 Push mirror to new GitHub repository
 
 _cd repo.git_
+
 _git push --mirror https://github.com/ghuser/repo.git_
 
 Remove temporary local repository
 
 _cd .._
+
 _rm -rf repo.git_
 
 Your newly imported repository should be ready to go on GitHub!
