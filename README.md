@@ -19,13 +19,16 @@ In this example, we use an external account named extuser and
 a GitHub account named ghuser to transfer repo.git
 
 Make a bare clone of the external repository to a local directory
+
 _git clone --bare https://githost.org/extuser/repo.git_
 
 Push mirror to new GitHub repository
+
 _cd repo.git_
 _git push --mirror https://github.com/ghuser/repo.git_
 
 Remove temporary local repository
+
 _cd .._
 _rm -rf repo.git_
 
