@@ -1,25 +1,43 @@
 # SVN property set svn:externals
 
 Directory Structure
- TopDir
-   |__Dir1
-       |___ file1.xml
-   |__Dir2
-       |___ file1.xml
-   |__Dir3
-       |___ file3.xml (Link to Dir1/file1.xml)
+
+
+- TopDir
+    * Dir1
+        + file1.xml
+    * Dir2
+        + file2.xml
+    * Dir3
+        + file3.xml (Link to Dir1/file1.xml)
 
 ## Set the property svn:externals in "Dir3"
 ```
 $ cd TopDir/Dir3
-$ svn propset svn:externals 'file3.xml ../Dir1/file1.xml' .
+$ svn propset svn:externals 'file3.xml http://svnURL-path/Dir1/file1.xml' .
 ```
 ## Commit "Dir3"
 ```
-$ svn commit -m "Property set - symlink from file3.xml to ../Dir1/file1.xml"
+$ svn commit -m "Property set - symlink from file3.xml to http://svnURL-path/Dir1/file1.xml"
 $ cd ..;svn update
 ```
 ## You should now be able to see the structure as desired with "file3.xml" content is "../Dir1/file1.xml"
+
+## One can do all these also from TortoiseSVN in windows enviornment !!!
+
+- Right-click on the directory 
+- Select "Tortoise SVN.." => "properties" => "New..."
+- Select from "Property name combo box" "svn:externals"
+- In the "Properties value" give the following and select "OK"
+```
+file3.xml http://svnURL-path/Dir1/file1.xml
+```
+- Commit the directory "Dir3"
+- Any other client when the project is updated will get the file Dir3/file3.xml which is linked to Dir1/file1.xml
+
+## Drawback
+
+- The file content when changed either from Dir1/file1.xml or Dir3/file3.xml will affect both !!! 
  
 # How to add trusted certificates to the Server
 
