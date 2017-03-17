@@ -1,3 +1,26 @@
+# SVN property set svn:externals
+
+Directory Structure
+ TopDir
+   |__Dir1
+       |___ file1.xml
+   |__Dir2
+       |___ file1.xml
+   |__Dir3
+       |___ file3.xml (Link to Dir1/file1.xml)
+
+## Set the property svn:externals in "Dir3"
+```
+$ cd TopDir/Dir3
+$ svn propset svn:externals 'file3.xml ../Dir1/file1.xml' .
+```
+## Commit "Dir3"
+```
+$ svn commit -m "Property set - symlink from file3.xml to ../Dir1/file1.xml"
+$ cd ..;svn update
+```
+## You should now be able to see the structure as desired with "file3.xml" content is "../Dir1/file1.xml"
+ 
 # How to add trusted certificates to the Server
 
 http://kb.kerio.com/product/kerio-connect/server-configuration/ssl-certificates/adding-trusted-root-certificates-to-the-server-1605.html
