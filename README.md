@@ -1,3 +1,27 @@
+# Unix grep command to retrieve lines adjacent
+
+```
+grep -C 5 "search pattern" <file>
+```
+Gives 5 lines above and below the "search pattern" 
+
+# Finding Zookeeper version
+
+```
+echo ruok | nc zkserver1 2181
+echo status | nc zkserver1 2181
+replace zkserver1 with the hostname\ip eg. 127.0.0.1
+
+# echo ruok  | nc 127.0.0.1 2181
+imok
+# echo status | nc 127.0.0.1 2181
+Zookeeper version: 3.4.5-cdh5.4.8--1, built on 10/15/2015 16:00 GMT
+:
+:
+```
+
+First line should respond with imok Second line should respond with Zookeeper version + more.
+
 # SVN property set svn:externals
 
 Directory Structure
@@ -9,7 +33,7 @@ Directory Structure
         + file2.xml
     * Dir3
         + file3.xml (Link to Dir1/file1.xml)
-
+---
 ## To create a symlink "Dir3/file3.xml" to point to the file "Dir1/file1.xml": 
 ```
 $ cd TopDir/Dir3
@@ -28,7 +52,7 @@ $ svn update
 
 - The file content will change when changed either from Dir1/file1.xml or Dir3/file3.xml !!!
 - This is not a viable solution as the user doesn't know that it might affect someone else !!! 
-
+---
 ## One can do all these also from TortoiseSVN in windows enviornment !!!
 
 - Right-click on the directory 
@@ -77,11 +101,21 @@ Comment out the "proxy" tag and then use
 npm install
 ```
 
+# Find magics
+## Remove all files except multiple files 
+```
+find spec/acceptance/ -type f  -name "*.rb" | grep  -ve "00_" -ve "02_" | xargs rm -rf
+```
 
+## Remove all files except war files
+```
+find . -type f -name "*.war"|awk -F'.' '{print $2}'|awk -F'/' '{print $2}'|xargs rm -rf
+```
+
+## Describe all kafka topics
+```
 for topic in `echo "inventory-ana services-ana xdsl-ana shdsl-ana naports-ana"`; do /opt/kafka/bin/kafka-topics.sh --describe --topic ${topic} --zookeeper localhost:2181; done
-
-find spec/acceptance/ -type f  -name "*.rb" | grep  -v "02_sbi_spec" | xargs rm -rf
-
+```
 
 # Git Checkout by a separate private key
 In ~/.ssh/config, add:
