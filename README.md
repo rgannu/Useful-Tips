@@ -1,3 +1,115 @@
+# Markdown Cheatsheet
+https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet#tables
+
+# Spring bean scopes
+
+## 5 types of bean scopes supported :
+
+
+|Scope	|Description|
+|:------------:|:------------:|
+|singleton|(Default) Scopes a single bean definition to a single object instance per Spring IoC container.|
+|prototype|Scopes a single bean definition to any number of object instances.|
+|request|Scopes a single bean definition to the lifecycle of a single HTTP request; that is, each HTTP request has its own instance of a bean created off the back of a single bean definition. Only valid in the context of a web-aware Spring ApplicationContext.|
+|session|Scopes a single bean definition to the lifecycle of an HTTP Session. Only valid in the context of a web-aware Spring ApplicationContext.|
+|globalSession|Scopes a single bean definition to the lifecycle of a global HTTP Session. Typically only valid when used in a Portlet context. Only valid in the context of a web-aware Spring ApplicationContext.|
+|application|Scopes a single bean definition to the lifecycle of a ServletContext. Only valid in the context of a web-aware Spring ApplicationContext.|
+|websocket|Scopes a single bean definition to the lifecycle of a WebSocket. Only valid in the context of a web-aware Spring ApplicationContext.|
+
+To set spring bean scopes we can use “scope” attribute in bean element or @Scope annotation for annotation based configurations.
+
+# Deleting a remote GIT branch
+```
+git push orgin --delete <branch_name>
+git branch -d <branch_name>
+
+# When there are unmerged changes which you are confident of deleting:
+git branch -D <branch_name>
+```
+
+# Useful Unix commands
+## Find out stale files
+```
+lsof | grep -i defunct
+```
+## Display output as a Table
+```
+mount | column -t
+cat /etc/passwd | column -t -s:
+```
+## Repeat a Command Until It Runs Successfully
+```
+while true; do ping -c 1 google.com > /dev/null 2>&1 && break; done
+```
+## Sort ps output
+```
+ps axu --sort=vsz
+ps axu --sort=pcpu
+```
+## Sort Processes by Memory Usage
+```
+ps aux | sort -rnk 4:
+```
+## Sort Processes by CPU Usage
+```
+ps aux | sort -nk 3:
+```
+## Watch Multiple Log Files at the Same Time
+```
+yum install multitail
+```
+## Monitor Command Output at Regular Intervals
+```
+watch df -h
+```
+## Run Program After Session Killing
+```
+nohup <command>
+```
+## Run Program After Session Killing
+```
+nohup <command>
+```
+## Automatically Answer Yes or No to Any Command
+```
+[yes][no] | yum install <package>  OR
+yum install -y <package>
+```
+## Create File With a Specific Size
+```
+dd if=/dev/zero of=out.txt bs=1M count=10
+```
+## Run Your Last Command as Root
+```
+sudo !!
+```
+## Record Your Command Line Session
+```
+typescript : script
+```
+## Convert a File to Upper or Lower Case
+```
+cat myfile | tr a-z A-Z > output.txt
+```
+## Use of xargs
+### Create the tar file with all *.png files
+```
+find. -name *.png -type f -print | xargs tar -cvzf images.tar.gz
+```
+### Remove all files except multiple files 
+```
+find spec/acceptance/ -type f  -name "*.rb" | grep  -ve "00_" -ve "02_" | xargs rm -rf
+```
+### Remove all files except war files
+```
+find . -type f -name "*.war"|awk -F'.' '{print $2}'|awk -F'/' '{print $2}'|xargs rm -rf
+```
+## Convert a File to Upper or Lower Case
+```
+cat myfile | tr a-z A-Z > output.txt
+```
+
+
 # Unix grep command to retrieve lines adjacent
 
 ```
