@@ -1,3 +1,36 @@
+# Useful GitHub Projects
+learning-spark-examples: https://github.com/holdenk/learning-spark-examples.git
+kafka-junit: https://github.com/charithe/kafka-junit
+camelinaction2: https://github.com/camelinaction/camelinaction2
+spring-data-examples: https://github.com/spring-projects/spring-data-examples
+spring-restbucks: https://github.com/olivergierke/spring-restbucks
+spring-restdocs: https://github.com/spring-projects/spring-restdocs
+spark-queue-stream: https://github.com/abhinavg6/spark-queue-stream
+swagger-maven-example: https://github.com/kongchen/swagger-maven-example
+Simple-Meetup-Client: https://github.com/abhinavg6/Simple-Meetup-Client
+example-spark: https://github.com/mkuthan/example-spark
+java8-custom-collector-example: https://github.com/marad/java8-custom-collector-example
+mvc-exceptions: https://github.com/paulc4/mvc-exceptions
+spring-rest-exception-handler: https://github.com/jirutka/spring-rest-exception-handler
+SparkApps: https://github.com/sujee81/SparkApps
+jsondoc: https://github.com/fabiomaffioletti/jsondoc
+java8-tutorial: https://github.com/winterbe/java8-tutorial
+jdk8-lambda-tour: https://github.com/JosePaumard/jdk8-lambda-tour
+Cloudera-Impala-JDBC-Example: https://github.com/onefoursix/Cloudera-Impala-JDBC-Example
+generator-reveal: https://github.com/slara/generator-reveal
+gs-caching: https://github.com/spring-guides/gs-caching
+gs-service-registration-and-discovery: https://github.com/spring-guides/gs-service-registration-and-discovery
+
+hello-samza: https://github.com/jkreps/hello-samza
+IgniteSparkIoT: https://github.com/dmagda/IgniteSparkIoT
+Neo4j_Hive_Demo: https://github.com/davidfauth/Neo4j_Hive_Demo
+project-examples: https://github.com/JFrogDev/project-examples
+
+professional-development-professional-developers: https://github.com/stevegrunwell/professional-development-professional-developers
+reveal.js: https://github.com/hakimel/reveal.js
+reveal-md: https://github.com/webpro/reveal-md
+
+
 # Markdown Cheatsheet
 https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet#tables
 
