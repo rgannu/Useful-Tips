@@ -1,4 +1,7 @@
 # Useful GitHub Projects
+
+playground: https://github.com/rgannu/playground
+
 learning-spark-examples: https://github.com/holdenk/learning-spark-examples.git
 kafka-junit: https://github.com/charithe/kafka-junit
 camelinaction2: https://github.com/camelinaction/camelinaction2
