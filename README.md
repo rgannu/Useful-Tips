@@ -1,3 +1,70 @@
+# To rename dir in GIT
+
+Basic rename (or move):
+```
+git mv <old name> <new name>
+```
+Case sensitive rename—eg. from casesensitive to CaseSensitive—you must use a two step:
+```
+git mv casesensitive tmp
+git mv tmp CaseSensitive
+```
+
+# To save space in jenkins:
+## Remove all the jars from jobs directory !!!
+```
+cd /var/lib/jenkins/jobs
+sudo -u jenkins /bin/find . -name *.jar | sudo xargs rm -f
+```
+
+# Delete all un-tagged (or intermediate) images:
+
+## Cleaning up Docker images (local)
+```
+docker images -q  --filter 'dangling=true' | xargs docker rmi --force
+```
+
+## Cleaning up Docker images (AWS)
+
+```
+#!/bin/sh
+
+APIS="billing-period card eid integration prerequest product quickview standing-order topup classic-credit-view transaction"
+
+for api in `echo ${APIS}`; do
+  REPO="spencr/api/${api}"
+  echo
+  echo "Deleting UNTAGGED images from amazon ECR repo: ${REPO}..."
+  aws ecr batch-delete-image --repository-name ${REPO} --image-ids $(aws ecr list-images --repository-name ${REPO} --filter tagStatus=UNTAGGED --query 'imageIds[*]'| tr -d " \t\n\r")
+done
+```
+
+# To remove from Jenkins zombie threads:
+
+Go to "Manage Jenkins" -> "Script Console"
+
+```
+Jenkins.instance.getItemByFullName("JobName").getBuildByNumber(BuildNumber).finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));
+```
+JobName: 
+ - For multi-branch pipeline job: <Project-Name>/<branch>
+BuildNumber:
+ - Retrieve from the Jenkins
+
+
+To kill a specific thread with the name, use:
+```
+Thread.getAllStackTraces().keySet().each() {
+  t -> println(t.getName()); 
+}
+```
+Then, kill with that thread name:
+```
+Thread.getAllStackTraces().keySet().each() {
+  t -> if (t.getName()=="YOUR THREAD NAME" ) {   t.interrupt();  }
+}
+```
+
 # Useful GitHub Projects
 
 playground: https://github.com/rgannu/playground
