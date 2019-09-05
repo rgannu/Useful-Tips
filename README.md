@@ -1,3 +1,139 @@
+# Using cm-client python api to create cloudera manager services
+
+https://gist.github.com/gdgt/d2eb4abe39da05353a58451c103f41e5
+
+(copied to cmxDocker.py)
+
+# Command Line Options: How To Parse In Bash Using “getopt”
+
+http://www.bahmanm.com/blogs/command-line-options-how-to-parse-in-bash-using-getopt
+```bash
+ARGUMENT_LIST=(
+    "arg-one"
+    "arg-two"
+    "arg-three"
+)
+
+
+# read arguments
+opts=$(getopt \
+    --longoptions "$(printf "%s:," "${ARGUMENT_LIST[@]}")" \
+    --name "$(basename "$0")" \
+    --options "" \
+    -- "$@"
+)
+
+echo $opts
+
+eval set -- "$opts"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --arg-one)
+            echo "in arg-one"
+            argOne=$2
+            shift 2
+            ;;
+        --arg-two)
+            argTwo=$2
+            shift 2
+            ;;
+        --arg-three)
+            argThree=$2
+            shift 2
+            ;;
+        *)
+            echo $1
+            echo "in others"
+            break
+            ;;
+    esac
+done
+
+echo "args:$argOne::$argTwo::$argThree"
+```
+
+# Remove hdfs files older than 10 days
+https://stackoverflow.com/questions/44235019/delete-files-older-than-10days-on-hdfs
+```bash
+hdfs dfs -ls /file/Path    |   tr -s " "    |    cut -d' ' -f6-8    |     grep "^[0-9]"    |    awk 'BEGIN{ MIN=14400; LAST=60*MIN; "date +%s" | getline NOW } { cmd="date -d'\''"$1" "$2"'\'' +%s"; cmd | getline WHEN; DIFF=NOW-WHEN; if(DIFF > LAST){ print "Deleting: "$3; system("hdfs dfs -rm -r "$3) }}'
+```
+
+# Safer bash scripts with 'set -euxo pipefail'
+```bash
+https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+```
+
+# Kafka useful commands
+## To know the # of messages in a kafka topic
+```bash
+kafka-run-class kafka.tools.GetOffsetShell --broker-list `hostname -f`:9092 --topic LilyItxIngestErrors --time  -1 | while IFS=: read topic_name partition_id number; do echo "$number"; done | paste -sd+ - | bc
+```
+
+## Offset checker
+```bash
+while [ 1 ]; do kafka-consumer-offset-checker --topic LilyItxIngest --zookeeper `hostname -f`:2181/kafka --group  lily-itx-speed-layer-ingest-default | awk -F ' ' '{ print "partition:" $3 " => offset:" $4 " => logsize:" $5 " => lag:" $6}'; sleep 2; done 
+```
+
+# Sum all offsets
+```bash
+while [ 1 ]; date; do kafka-consumer-offset-checker --topic LilyItxIngest --zookeeper `hostname -f`:2181/kafka --group  lily-itx-speed-layer-ingest-default | grep -v "Lag" | awk -F ' ' '{ print  $3 ":" $4 ":" $5 ":" $6}' | while IFS=: read partition offset logsize lag; do echo "$lag"; done | paste -sd+ - | bc; sleep 60; done > /tmp/offset-check.out
+```
+
+# Compare the lag
+kafka-consumer-offset-checker --topic LilyItxIngest --zookeeper `hostname -f`:2181/kafka --group  lily-itx-speed-layer-ingest-default | awk -F ' ' '{ print "partition:" $3 " => offset:" $4 " => logsize:" $5 " => lag:" $6}' > /tmp/offset1; \
+sleep 60; \
+kafka-consumer-offset-checker --topic LilyItxIngest --zookeeper `hostname -f`:2181/kafka --group  lily-itx-speed-layer-ingest-default | awk -F ' ' '{ print "partition:" $3 " => offset:" $4 " => logsize:" $5 " => lag:" $6}' > /tmp/offset2
+```
+
+# Extract RPM without installing it
+```bash
+rpm2cpio <rpm file>
+rpm2cpio - < <rpm file>
+rpm2cpio <rpm file> | cpio -idmv
+```
+
+# Copy between GIT repositories
+
+## To copy a branch
+
+```bash
+# To add remote repository
+git remote add github <url of github repository>
+
+# To get the latest branches, tags from github
+git fetch github
+
+# To track changes from github branch to local branch
+git checkout -b <branch-local> github/<branch-in-github>
+
+# Retrieve all changes from github branch to local branch
+git pull --rebase
+
+# Push the changes to local repository
+git push -f origin <branch>
+```
+
+# To Delete a remote Git tag
+
+If you have a tag named '12345' then you would just do this:
+
+```bash
+git tag -d 12345
+git push origin :refs/tags/12345
+That will remove '12345' from the remote repository.
+```
+
+# Rename a git branch (locally and remote)
+https://gist.github.com/lttlrck/9628955
+
+```bash
+git branch -m old_branch new_branch         # Rename branch locally    
+git push origin :old_branch                 # Delete the old branch
+git branch --unset-upstream new_branch      # Unset the tracking info, so it doesn't push with the old name
+git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
+```
+
 # To rename dir in GIT
 
 Basic rename (or move):
@@ -408,3 +544,5 @@ cd ..
 rm -rf repo.git
 ```
 Your newly imported repository should be ready to go on GitHub!
+
+[gist]: https://gist.github.com/gdgt/d2eb4abe39da05353a58451c103f41e5
