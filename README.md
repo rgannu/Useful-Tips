@@ -1,3 +1,65 @@
+# Get all git tags
+```bash
+git ls-remote --tags
+git fetch --all --tags --prune
+```
+
+# Get version details
+```bash
+#!/usr/bin/env bash -e
+MAVEN_OPTS="-Dorg.slf4j.simpleLogger.logFile=/dev/null" mvn help:effective-pom -N -o -Doutput=/dev/stdout "$@" |\
+ xml sel -t -m '/_:project/_:properties/*[starts-with(name(),"version.") and not(starts-with(name(),"version.cdh")) and not(starts-with(name(),"version.hdp"))]' -c . -n |\
+ sed -e 's/ xmlns.*=".*"//g' | sort | uniq
+```
+
+# Release a project using maven
+```bash
+#!/bin/bash
+set -e
+
+get_pom() {
+  MAVEN_OPTS="-Dorg.slf4j.simpleLogger.logFile=/dev/null" mvn help:effective-pom -N -o -Doutput=/dev/stdout
+}
+
+resolved_pom=$(get_pom)
+
+project_version=$(echo "$resolved_pom" | xml sel -t -m '/_:project/_:version' -v .)
+echo "Resolved project version to $project_version"
+lily_version=$(echo "$resolved_pom" | xml sel -t -m '/_:project/_:properties/_:version.lily' -v .)
+lily_version=${lily_version%%-*}
+echo "Resolved lily version to $lily_version"
+
+release_version="${project_version%-SNAPSHOT}-${lily_version}"
+echo "Release version: $release_version"
+
+GPG_TTY=$(tty) mvn release:prepare --batch-mode -DautoversionSubmodles -DreleaseVersion=$release_version -DdevelopmentVersion=$project_version "$@"
+mvn release:perform -DskipNexusStagingDeployMojo -Darguments='-DskipTests -DskipNexusStagingDeployMojo'
+mvn release:update-versions -DautoVersionSubmodules --batch-mode
+
+git commit -m 'Update version'
+git push
+git push --tags
+```
+
+# Git move recent commits (pushed commits) to a new branch
+https://blog.programster.org/git-move-recent-commits-to-a-branch
+
+# Add timestamp to bash script output
+
+https://serverfault.com/questions/310098/how-to-add-a-timestamp-to-bash-script-log
+
+```bash
+adddate() {
+    while IFS= read -r line; do
+        printf '%s %s\n' "$(date)" "$line";
+    done
+}
+
+./thisscript.sh | adddate >>/var/log/logfile
+./thatscript.sh | adddate >>/var/log/logfile
+./theotherscript.sh | adddate >>/var/log/logfile
+```
+
 # Using cm-client python api to create cloudera manager services
 
 https://gist.github.com/gdgt/d2eb4abe39da05353a58451c103f41e5
@@ -95,7 +157,7 @@ rpm2cpio <rpm file> | cpio -idmv
 
 # Copy between GIT repositories
 
-## To copy a branch
+## To copy a github branch to local
 
 ```bash
 # To add remote repository
@@ -112,6 +174,19 @@ git pull --rebase
 
 # Push the changes to local repository
 git push -f origin <branch>
+```
+
+# To copy a local branch to github
+
+```bash
+# To get the latest branches, tags from github
+git fetch
+
+# Checkout the local branch
+git checkout <branch-local>
+
+# The following command will push in github with the name <branch-local>
+git push -f github <branch-local>
 ```
 
 # To Delete a remote Git tag
